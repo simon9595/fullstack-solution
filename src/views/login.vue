@@ -4,10 +4,10 @@
     <h1>Login</h1>
     <form>
       <label for="email">E-mail:</label><br>
-      <input type="text" id="email" name="e-mail"><br>
+      <input type="text" v-model="email" name="e-mail"><br>
       <label for="password">Password</label><br>
-      <input type="password" id="password" name="password"><br>
-      <input value="Log in" type="submit">
+      <input type="password" v-model="password" name="password"><br>
+      <input v-on:click="login()" value="Log in" type="submit">
     </form>
     <p>Don't have an account? <router-link to='/signup'>Sign up</router-link></p>
   </div>
@@ -19,3 +19,25 @@
   height: 400px;
 }
 </style>
+
+<script>
+import axios from 'axios'
+ export default {
+  name: "App",
+  data(){
+    return{
+      email:'',
+      password:'',
+    }
+  },
+  methods:{
+    async login(){
+      let result = await axios.post("http://localhost:3000/api/user/login",{
+        email: this.email,
+        password: this.password
+      })
+      console.warn(result)
+    }
+  }
+ }
+</script>
