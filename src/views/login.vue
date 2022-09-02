@@ -3,9 +3,9 @@
     <img id="logo-top" src="../assets/icon-above-font.png" alt="groupomania logo" />
     <h1>Login</h1>
     <form>
-      <label for="email">E-mail:</label><br />
-      <input type="text" v-model="email" name="e-mail" required /><br />
-      <label for="password">Password</label><br />
+      <label for="email">E-mail</label><br />
+      <input type="email" v-model="email" name="e-mail" required /><br />
+      <label for="password">Password </label><br />
       <input type="password" v-model="password" name="password" required /><br />
       <input v-on:click="login()" value="Log in" type="submit" />
     </form>
@@ -35,11 +35,16 @@ export default {
   },
   methods: {
     async login() {
-      let result = await axios.post("http://localhost:3000/api/user/login", {
+      await axios.post("http://localhost:3000/api/user/login", {
         email: this.email,
         password: this.password,
-      });
-      console.warn(result);
+      })
+      .then(response => {
+        console.log(response)
+        localStorage.setItem('token', response.data.token)
+        this.$router.push('/newsfeed')
+      })
+      .catch(error => console.error(error));
     },
   },
 };

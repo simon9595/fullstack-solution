@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import login from '../views/login.vue'
 import signup from '../views/signup.vue'
+import newsfeed from '../views/newsfeed.vue';
 
 const routes = [
   {
@@ -12,7 +13,12 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: signup
-  }
+  },
+  {
+    path: '/newsfeed',
+    name: 'newsfeed',
+    component: newsfeed
+  },
 ]
 
 const router = createRouter({

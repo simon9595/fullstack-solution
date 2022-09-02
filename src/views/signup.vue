@@ -4,11 +4,14 @@
     <h1>Sign up</h1>
     <form>
       <label for="email">E-mail address</label><br />
-      <input type="email" v-model="email" required /><br />
+      <input v-model="email" required /><br />
+      <p class="signup-instructions">E-mail must be a valid address, e.g. email@example.com</p>
       <label for="username">Username</label><br />
       <input type="text" v-model="username" required /><br />
+      <p class="signup-instructions">Username must contain 3-15 characters</p>
       <label for="password">Password</label><br />
       <input type="password" v-model="password" required /><br />
+      <p class="signup-instructions">Password must be at least 8 characters long</p>
       <input v-on:click="addUser()" class="submit" type="submit" value="Sign up" />
     </form>
     <p>
@@ -21,6 +24,10 @@
 #logo-left {
   height: 400px;
   width: 400px;
+}
+.signup-instructions {
+  font-size: 0.8em;
+  align: left;
 }
 </style>
 
@@ -36,13 +43,36 @@ export default {
     };
   },
   methods: {
+    // validateEmail() {
+    //   const regexEmail = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{2,}\.[a-z]{2,10}$/;
+    //   let correctEmail = regexEmail.test(this.email);
+    //   console.log(correctEmail)},
+    // const inputs = this.input
     async addUser() {
-      let result = await axios.post("http://localhost:3000/api/user/signup", {
+      const regexEmail = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{2,}\.[a-z]{2,10}$/;
+      const regexUsername = /^[a-zA-Z0-9_-]{3,15}$/;
+      const regexPassword = /^.{8,}$/;
+      let correctEmail = regexEmail.test(this.email);
+      let correctUsername = regexUsername.test(this.username);
+      let correctPassword = regexPassword.test(this.password);
+      console.log(correctEmail, correctUsername, correctPassword)
+      if(correctEmail && correctUsername && correctPassword && this.email!==null && this.username!==null &&this.password!==null) {
+        await axios.post("http://localhost:3000/api/user/signup", {
         username: this.username,
         email: this.email,
         password: this.password,
-      });
-      console.warn(result);
+      })
+      .then(response => {
+        console.log(response)
+        alert('Your account has been created.')
+        this.$router.push('/')
+        })
+      .catch(error => console.error(error));
+      } else {
+        alert('Placeholder error message.')
+      }
+
+
     },
   },
 };
