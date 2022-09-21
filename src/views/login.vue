@@ -1,13 +1,14 @@
 <template>
-  <div class="login">
+
+  <div class="container">
     <img id="logo-top" src="../assets/icon-above-font.png" alt="groupomania logo" />
     <h1>Login</h1>
-    <form @submit.prevent="login()">
-      <label for="email">E-mail</label><br />
-      <input type="email" v-model="email" name="e-mail" required /><br />
-      <label for="password">Password </label><br />
-      <input type="password" v-model="password" name="password" required /><br />
-      <input value="Log in" type="submit" />
+    <form @submit.prevent="login()" class="card-body mx-auto" style="max-width: 300px">
+      <label class="form-label col-form-label-md" for="email">E-mail</label><br />
+      <input class="form-control form-control-md" type="email" v-model="email" name="e-mail" required /><br />
+      <label class="form-label col-form-label-md" for="password">Password </label><br />
+      <input class="form-control form-control-md" type="password" v-model="password" name="password" required /><br />
+      <input class="btn btn-block btn-primary" value="Log in" type="submit" />
     </form>
     <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
   </div>
@@ -41,7 +42,9 @@ export default {
       })
       .then(response => {
         console.log(response)
+        localStorage.setItem('userData', response.data)
         localStorage.setItem('token', response.data.token)
+        this.$store.commit('loginData', [response.data.userId, response.data.username, response.data.email, response.data.isAdmin, response.data.token])
         this.$router.push('/newsfeed')
       })
       .catch(error => console.error(error));

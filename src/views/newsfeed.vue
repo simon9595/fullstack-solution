@@ -1,6 +1,6 @@
 <template>
 <p>This is the newsfeed.</p>
-<p>You are logged in as username</p>
+<p>You are logged in as {{ $store.state.userData.username }}</p>
 
 <newpost />
 <div v-for="post in posts" v-bind:key="post.id">
@@ -19,6 +19,7 @@
 </style>
 
 <script>
+// import { userData } from 'vuex';
 import axios from "axios"
 import newpost from "../components/newpost.vue"
 // import post from "../components/post.vue"
@@ -31,7 +32,6 @@ export default {
   },
   components: {
     newpost,
-    // post
   },
   beforeMount() {
     axios.get("http://localhost:3000/api/post")
@@ -39,15 +39,6 @@ export default {
       this.posts = response.data; 
     console.log(this.posts)})
     .catch(error => console.error(error))
-  }
+  },
 }
-// import { mapGetters } from 'vuex';
-
-// export default {
-//     computed: {
-//         ...mapGetters([
-//             'username',
-//         ])
-//     },
-// };
 </script>

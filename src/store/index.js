@@ -1,23 +1,28 @@
-import { createStore } from 'vuex'
+// import axios from 'axios';
+import { createStore } from 'vuex';
 
 export default createStore({
   state: {
     userData: {
-      UUID: '123j1o4ji12-fsfs',
-      username: 'Sample text',
-      email: 'sample@text.com',
-      token: null,
-      isAdmin: null
+      userId: '',
+      username: '',
+      email: '',
+      isAdmin: false,
+      token: ''
     }
   },
   getters: {
-    // username: (state) {
-    //   return '${state.username}'
-    // }
   },
   mutations: {
+    loginData(state, [userId, username, email, isAdmin, token]){
+      state.userData.userId = userId;
+      state.userData.username = username;
+      state.userData.email = email;
+      state.userData.isAdmin = isAdmin;
+      state.userData.token = token;
+    }
   },
-  actions: {
+  actions: { //getAllPosts should be an action
   },
   modules: {
   }

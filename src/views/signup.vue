@@ -1,18 +1,18 @@
 <template>
-  <div class="signup">
+  <div class="container">
     <img id="logo-left" src="../assets/icon-left-font.png" alt="groupomania logo" />
     <h1>Sign up</h1>
-    <form @submit.prevent="addUser">
-      <label for="email">E-mail address</label><br />
-      <input v-model="email" required /><br />
-      <p class="signup-instructions">E-mail must be a valid address, e.g. email@example.com</p>
-      <label for="username">Username</label><br />
-      <input type="text" v-model="username" required /><br />
-      <p class="signup-instructions">Username must contain 3-15 characters</p>
-      <label for="password">Password</label><br />
-      <input type="password" v-model="password" required /><br />
-      <p class="signup-instructions">Password must be at least 8 characters long</p>
-      <input class="submit" type="submit" value="Sign up" />
+    <form @submit.prevent="addUser" class="card-body mx-auto" style="max-width: 400px">
+      <label class="form-label col-form-label-md" for="email">E-mail address</label><br />
+      <input class="form-control form-control-md" v-model="email" required /><br />
+      <p class="form-text">E-mail must be a valid address, e.g. email@example.com</p>
+      <label class="form-label col-form-label-md" for="username">Username</label><br />
+      <input class="form-control form-control-md" type="text" v-model="username" required /><br />
+      <p class="form-text">Username must contain 3-15 characters</p>
+      <label class="form-label col-form-label-md" for="password">Password</label><br />
+      <input class="form-control form-control-md" type="password" v-model="password" required /><br />
+      <p class="form-text">Password must be at least 8 characters long</p>
+      <input class="form-control form-control-md" type="submit" value="Sign up" />
     </form>
     <p>
       Already have an account? <router-link to="/">Return to log in page</router-link>
@@ -24,10 +24,6 @@
 #logo-left {
   height: 400px;
   width: 400px;
-}
-.signup-instructions {
-  font-size: 0.8em;
-  align: left;
 }
 </style>
 
