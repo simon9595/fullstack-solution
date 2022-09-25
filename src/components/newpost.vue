@@ -21,16 +21,16 @@ export default {
     return {
       userId: null,
       text: null,
-      file: null
+      attachment: null
     }
   },
   methods: {
     async publish() {
       console.log(this.userId, this.text, this.file)
       await axios.post('http://localhost:3000/api/post/publish',{
-      userId: 1,
+      userId: this.$store.state.userData.userId,
       text: this.text,
-      file: this.file
+      attachment: null
     }).then(response => {
       console.log(response)
       alert('Your post has been published')
