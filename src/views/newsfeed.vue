@@ -9,6 +9,7 @@
 <p>{{ post.createdAt }}</p>
 <p v-if="post.createdAt !== post.updatedAt">Edited:{{ post.updatedAt }}</p>
 <p>{{ post.text }}</p>
+<img v-if="post.attachment" v-bind:src="post.attachment">
 <p>{{ post.likes }} likes <!--{{ post.comments }}--> 0 comments</p> <!-- fix the comments so it displays the length -->
 <button @click="postLike(postId = post.id)">Like</button>
 <button>Comment</button>
