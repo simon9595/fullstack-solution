@@ -66,7 +66,8 @@ export default {
     logout(){
       console.log('Logging out')
       localStorage.clear();
-      window.location.reload()
+      this.$store.commit('loginData', [undefined])
+      this.$router.push('/')
     },
   },
   beforeMount() {
