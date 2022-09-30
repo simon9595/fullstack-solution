@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img id="logo-left" src="../assets/icon-left-font.png" alt="groupomania logo" />
+    <img class="img-fluid" src="../assets/icon-left-font.png" alt="groupomania logo" />
     <h1>Sign up</h1>
     <form @submit.prevent="addUser" class="card-body mx-auto" style="max-width: 400px">
       <label class="form-label col-form-label-md" for="email">E-mail address</label><br />
@@ -9,25 +9,19 @@
       <label class="form-label col-form-label-md" for="username">Username</label><br />
       <input class="form-control form-control-md" type="text" @blur="usernameAvailable(username = this.username)" v-model="username" required /><br />
       <p v-if="usernameTaken" class="bg-danger">Username is already taken</p>
-      <p v-else class="bg-success">Username is available</p>
+      <p v-else-if="!usernameTaken && usernameTaken !== null" class="bg-success">Username is available</p>
       <p class="form-text">Username must contain 3-15 characters</p>
       <label class="form-label col-form-label-md" for="password">Password</label><br />
       <input class="form-control form-control-md" type="password" @blur="passwordLength(password = this.password)" v-model="password" required /><br />
       <p class="form-text">Password must be at least 8 characters long</p>
-      <input class="form-control form-control-md" type="submit" value="Sign up" />
+      <input class="btn btn-primary form-control form-control-md" type="submit" value="Sign up" />
     </form>
+    
     <p>
       Already have an account? <router-link to="/">Return to log in page</router-link>
     </p>
   </div>
 </template>
-
-<style>
-#logo-left {
-  height: 400px;
-  width: 400px;
-}
-</style>
 
 <script>
 import axios from "axios";
@@ -36,9 +30,9 @@ export default {
   data() {
     return {
       email: null,
-      username: null,
+      username: '',
       password: null,
-      usernameTaken: false,
+      usernameTaken: null,
     };
   },
   methods: {
@@ -50,7 +44,7 @@ export default {
     usernameAvailable(username) {
       const regexUsername = /^[a-zA-Z0-9_-]{3,15}$/;
       let correctUsername = regexUsername.test(username);
-      if(correctUsername) {
+      if(this.username.length > 2 && correctUsername) {
         axios.get("http://localhost:3000/api/user/" + username, {
           username: username
         }).then(response => {
@@ -64,6 +58,7 @@ export default {
         }})
         .catch(error => console.log("bad bad " + error))
       } else {
+        this.usernameTaken = null;
         console.log(correctUsername + ' ding')
       }
 

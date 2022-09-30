@@ -3,6 +3,7 @@ import login from '../views/login.vue'
 import signup from '../views/signup.vue'
 import newsfeed from '../views/newsfeed.vue';
 import control from '../views/control.vue'
+import edit from '../views/edit.vue'
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     name: 'control',
     component: control
   },
+  {
+    path: '/edit',
+    name: 'edit',
+    component: edit
+  }
 ]
 
 const router = createRouter({

@@ -8,7 +8,7 @@ export default createStore({
       username: '',
       email: '',
       isAdmin: false,
-      token: ''
+      token: null
     }
   },
   getters: {

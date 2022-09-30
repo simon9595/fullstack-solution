@@ -1,10 +1,12 @@
 <template>
-  <form enctype="multipart/form-data" @submit.prevent="publish">
-    <textarea v-model="text" rows="7" cols="70"></textarea> <br />
-    <label for="file">Choose file to upload</label> <br />
-    <input @change="uploadFile" ref="attachment" type="file" accept="image/*">
-    <input type="submit" value="Pubish">
-  </form>  
+  <div class="container">
+    <form enctype="multipart/form-data" @submit.prevent="publish">
+      <textarea v-model="text" rows="7" cols="70"></textarea> <br />
+      <label for="file">Choose file to upload</label> <br />
+      <input @change="uploadFile" ref="attachment" type="file" accept="image/*">
+      <input type="submit" value="Pubish">
+    </form>  
+  </div>
 </template>
 
 <style>
@@ -19,7 +21,7 @@ export default {
   name: "newPost",
   data(){
     return {
-      text: null,
+      text: '',
       attachment: null
     }
   },
@@ -29,7 +31,9 @@ export default {
       formData.append('userId', this.$store.state.userData.userId)
       formData.append('text', this.text)
       formData.append('attachment', this.attachment)
-      await axios.post('http://localhost:3000/api/post/publish', formData)
+      await axios.post('http://localhost:3000/api/post/publish', formData, {headers: {
+        Authorization: 'Bearer ' + this.$store.state.userData.token
+      }})
       .then(response => {
       console.log(response)
       alert('Your post has been published')
