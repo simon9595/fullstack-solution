@@ -27,6 +27,9 @@ export default {
   },
   methods: {
     async publish() {
+      if(this.text == '' && this.attachment == null){
+        alert('Cannot publish an empty post')
+      } else {
       const formData = new FormData();
       formData.append('userId', this.$store.state.userData.userId)
       formData.append('text', this.text)
@@ -39,7 +42,7 @@ export default {
       alert('Your post has been published')
       this.$router.go()
     }).catch(error => console.error(error));
-  },
+  }},
   uploadFile() {
     console.log('File selected')
     this.attachment = this.$refs.attachment.files[0];

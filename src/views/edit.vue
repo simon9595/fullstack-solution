@@ -1,9 +1,9 @@
 <template>
 <h1>Editing post</h1>
-  <form>
+  <form enctype="multipart/form-data" @submit.prevent="submitEdit()">
     <textarea rows="7" cols="70" type="textarea" v-model="this.postEdit"></textarea><br>
     <button class="btn btn-secondary mx-2" @click="cancel()" type="button">Cancel</button>
-    <button class="btn btn-primary" @click="submitEdit()" type="button">Publish</button>
+    <button class="btn btn-primary" type="submit">Publish</button>
   </form>
 </template>
 
@@ -18,11 +18,11 @@ export default {
   },
   methods: {
     submitEdit(){
-      axios.put("http://localhost:3000/api/post/modify", {
-        userId: this.$store.state.userData.userId,
-        postId: this.postId,
-        text: this.postEdit
-      }, {
+      const formData = new FormData();
+      formData.append('userId', this.$store.state.userData.userId),
+      formData.append('postId', this.postId)
+      formData.append('text', this.postEdit)
+      axios.put("http://localhost:3000/api/post/modify", formData, {
         headers: {
         Authorization: 'Bearer ' + this.$store.state.userData.token
       }})
@@ -33,13 +33,11 @@ export default {
       }).catch(error => console.error(error))
     },
     cancel(){
-      console.log('Cancellation button? HURRY!')
       localStorage.removeItem('postDataString')
       this.$router.push('/newsfeed')
     }
   },
   beforeMount() {
-    console.log('Oi')
     let postDataString = localStorage.getItem('postDataString')
     let postData = JSON.parse(postDataString)
     this.postEdit = postData.text

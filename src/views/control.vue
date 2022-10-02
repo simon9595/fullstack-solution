@@ -1,23 +1,24 @@
 <template>
-<router-link to="/newsfeed">Return to Newsfeed</router-link>
-<p>Change password</p>
-<form @submit.prevent="checkPasswords">
+<h1>User control panel</h1><br >
+<h2>Change password</h2>
+<form enctype="multipart/form-data" @submit.prevent="checkPasswords">
   <label for="password">New password</label><br>
   <input v-model="password1" type="password"><br>
   <label for="password">Repeat new password</label><br>
   <input v-model="password2" type="password"><br>
   <p v-bind:class="{ 'bg-danger': shortPassword}">Password must be at least 8 characters long</p>
   <p class="bg-danger" v-if="passwordDifference">Passwords do not match.</p>
-  <input type="submit" value="Submit">
-</form>
+  <input class="btn btn-secondary" type="submit" value="Submit">
+</form><br >
 
-<p>Account deletion</p>
+<h2>Account deletion</h2>
 <form @submit.prevent="deleteAccount">
-  <label for="email">E-mail</label><br>
-  <input v-model="email" required><br>
+  <label for="password">Password</label><br>
+  <input type="password" v-model="password" required><br>
   <input type="checkbox" required v-model="certain">I understand this action is permanent and wish to delete my account<br>
-  <input type="submit" value="Delete my account">
+  <input class="btn btn-danger" type="submit" value="Delete my account">
 </form>
+<router-link to="/newsfeed">Return to Newsfeed</router-link>
 </template>
 
 <script>
@@ -30,7 +31,7 @@ export default {
       correctPassword: false,
       shortPassword: false,
       certain: false,
-      email: null,
+      password: null,
       password1: null,
       password2: null
     }
@@ -47,10 +48,12 @@ export default {
         if(!correctPassword){
           return this.shortPassword = true;
         }
-        axios.put("http://localhost:3000/api/user/" + this.$store.state.userData.userId, {
-          userId: this.$store.state.userData.userId,
-          password: this.password1
-        })
+        const formData = new FormData();
+        formData.append('userId', this.$store.state.userData.userId)
+        formData.append('password', this.password1)
+        axios.put("http://localhost:3000/api/user/" + this.$store.state.userData.userId, formData, {headers: {
+          Authorization: 'Bearer ' + this.$store.state.userData.token
+        }})
         .then(response => {
           console.log(response)
           alert('Password has been changed!')
@@ -62,18 +65,30 @@ export default {
     deleteAccount(){
       console.log(this.email, this.$store.state.userData.email, this.certain)
       // make sure the password is the actual user password
-      if(this.email == this.$store.state.userData.email && this.certain) {
-        console.log('account deletion proceed')
-        axios.delete("http://localhost:3000/api/user/" + this.$store.state.userData.userId, {
-          userId: this.$store.state.userData.userId, //delete requests do not take body
+      if(this.password != null && this.certain) {
+        const headers = {
+          'Authorization': 'Bearer ' + this.$store.state.userData.token
+        }
+        const data = {
+          userId: this.$store.state.userData.userId,
           password: this.password
-        })
+        }
+        console.log('account deletion proceed')
+        axios.delete("http://localhost:3000/api/user/" + this.$store.state.userData.userId, {headers, data}
+        )
         .then(response => {
           console.log(response)
+          alert('Account has been deleted')
+          localStorage.clear();
+          this.$store.commit('loginData', [undefined])
+          this.$router.push('/')
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error)
+          alert('Password mismatch')
+          })
       } else {
-        console.log("Email difference")
+        console.log("Something went wrong")
       }
     }
   },
