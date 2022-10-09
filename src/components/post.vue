@@ -7,8 +7,8 @@
     <div>
     <p class="bg-info" v-if="post.Seen == null || !post.Seen.seen">NEW!</p>
     <p>{{ post.User.username }}</p>
-    <p>{{ post.createdAt }}</p>
-    <p v-if="post.createdAt !== post.updatedAt">Edited:{{ post.updatedAt }}</p>
+    <p>{{ moment(post.createdAt).fromNow() }}</p>
+    <p v-if="post.createdAt !== post.updatedAt">Edited: {{ moment(post.updatedAt).fromNow() }}</p>
     <p>{{ post.text }}</p>
     <img class="img-fluid mb-4" v-if="post.attachment" v-bind:src="post.attachment">
     </div>
@@ -16,10 +16,12 @@
 </template>
 
 <script>
+import moment from 'moment'
 import axios from 'axios'
 export default {
   data() {
     return {
+      moment: moment,
       posts: []
     }
   },
