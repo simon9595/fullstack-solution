@@ -1,16 +1,22 @@
 <template>
-  <div class="container">
+  <div class="container bg-light rounded">
+    <h2>Compose new post</h2>
     <form enctype="multipart/form-data" @submit.prevent="publish">
-      <textarea v-model="text" rows="7" cols="70"></textarea> <br />
-      <label for="file">Choose file to upload</label> <br />
-      <input @change="uploadFile" ref="attachment" type="file" accept="image/*">
-      <input type="submit" value="Pubish">
+        <textarea class="form-control" v-model="text"></textarea> <br />
+      <div class="d-sm-flex justify-content-between row">
+        <div class="col-md-8">
+          <label for="file">Choose file to upload</label> <br />
+          <input class="btn btn-secondary form-control" @change="uploadFile" ref="attachment" type="file" accept="image/*">
+        </div>
+        <input class="btn col btn-primary align-self-end form-control" id="submit-button" type="submit" value="Pubish">
+      </div>
     </form>  
   </div>
 </template>
 
 <style>
   textarea {
+    height: 150px;
     resize: none;
   }
 </style>

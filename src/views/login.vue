@@ -16,8 +16,8 @@
 
 <style>
 #logo-top {
-  width: 400px;
-  height: 400px;
+  max-width: 350px;
+  max-height: 350px;
 }
 input {
   margin: 0.2em;
@@ -47,7 +47,10 @@ export default {
         this.$store.commit('loginData', [response.data.userId, response.data.username, response.data.email, response.data.isAdmin, response.data.token])
         this.$router.push('/newsfeed')
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error)
+        alert('Incorrect login information')
+      });
     },
 }
 }

@@ -1,12 +1,21 @@
 <template>
-<h1>Editing post</h1>
-  <form enctype="multipart/form-data" @submit.prevent="submitEdit()">
-    <textarea rows="7" cols="70" type="textarea" v-model="this.postEdit"></textarea><br>
-    <button class="btn btn-secondary mx-2" @click="cancel()" type="button">Cancel</button>
-    <button class="btn btn-primary" type="submit">Publish</button>
-  </form>
+  <div class="container mt-1" id="edit-post">
+  <h1>Editing post</h1>
+    <form enctype="multipart/form-data" @submit.prevent="submitEdit()">
+      <textarea class="form-control" type="textarea" v-model="this.postEdit"></textarea><br>
+      <div class="d-flex justify-content-around">
+        <button class="btn btn-secondary mx-2 form-control" @click="cancel()" type="button">Cancel</button>
+        <button class="btn btn-primary form-control" type="submit">Publish</button>
+      </div>
+    </form>
+  </div>
 </template>
 
+<style>
+  #edit-post {
+    max-width: 750px;
+  }
+</style>
 <script>
 import axios from 'axios'
 export default {
@@ -29,6 +38,7 @@ export default {
       .then(response => {
         console.log(response)
         alert('Your post has been modified')
+        localStorage.removeItem('postDataString')
         this.$router.push('/newsfeed')
       }).catch(error => console.error(error))
     },

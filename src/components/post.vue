@@ -1,15 +1,17 @@
 <template>
-  <div class="border mt-4" v-for="post in posts" v-bind:key="post.id">
-    <button class="btn btn-outline-secondary mx-2" @click="editPost(postData = post)" v-if="post.User.username == this.$store.state.userData.username">Edit</button> <!-- change this to a ... dropdown menu -->
-    <button type="button" class="btn btn-outline-danger" @click="deletePost(postId = post.id)" v-if="post.User.username == this.$store.state.userData.username || this.$store.state.userData.isAdmin == true">Delete</button>
+  <div class="border mt-4 mb-3 container rounded" v-for="post in posts" v-bind:key="post.id">
+    <div class="d-flex justify-content-end mt-2">
+      <button class="btn btn-outline-secondary mx-2" @click="editPost(postData = post)" v-if="post.User.username == this.$store.state.userData.username">Edit</button> <!-- change this to a ... dropdown menu -->
+      <button type="button" class="btn btn-outline-danger mx-2" @click="deletePost(postId = post.id)" v-if="post.User.username == this.$store.state.userData.username || this.$store.state.userData.isAdmin == true">Delete</button>
+    </div>
+    <div>
+    <p class="bg-info" v-if="post.Seen == null || !post.Seen.seen">NEW!</p>
     <p>{{ post.User.username }}</p>
     <p>{{ post.createdAt }}</p>
     <p v-if="post.createdAt !== post.updatedAt">Edited:{{ post.updatedAt }}</p>
     <p>{{ post.text }}</p>
-    <img v-if="post.attachment" v-bind:src="post.attachment">
-    <p>{{ post.likes }} likes <!--{{ post.comments }}--> 0 comments</p> <!-- fix the comments so it displays the length -->
-    <button class="btn btn-outline-primary" @click="postLike(postId = post.id)">Like</button>
-    <button class="btn btn-outline-secondary">Comment</button>
+    <img class="img-fluid mb-4" v-if="post.attachment" v-bind:src="post.attachment">
+    </div>
   </div>
 </template>
 
@@ -48,9 +50,19 @@ export default {
         alert('Something went wrong')
       })
     },
-  }, 
+    seen(){
+      console.log('Seen')
+      axios.post("http://localhost:3000/api/post/seen", {
+        userId: localStorage.getItem('userId')
+      }, {headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }})
+    }
+  },
+
   mounted() {
     this.getAllPosts()
+    this.seen()
   },
 
 }

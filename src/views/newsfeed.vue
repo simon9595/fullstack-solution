@@ -1,45 +1,38 @@
 <template>
 
-<nav>
-  <router-link to="/control">User control panel</router-link>
-  <button @click="logout()" class="mx-4" type="button">Logout</button>
-</nav>
-<p>You are logged in as <strong>{{ $store.state.userData.username }}</strong></p>
+<navbar />
+<div class="container" id="newsfeed">
+<p class="mt-2">You are logged in as <strong>{{ $store.state.userData.username }}</strong></p>
 <newpost />
 <post />
 
-
+</div>
 </template>
 
 <style>
-
+  #newsfeed{
+    max-width: 750px;
+  }
 </style>
 
 <script>
 import axios from "axios"
 import newpost from "../components/newpost.vue"
 import post from "../components/post.vue"
+import navbar from "../components/navbar.vue"
 export default {
   name: 'App',
   data() {
     return {
       posts: [],
-      postsKey: 0,
-      newPostKey: 0,
     }
   },
   components: {
     newpost,
-    post
+    post,
+    navbar
   },
-  methods: {
-    logout(){
-      console.log('Logging out')
-      localStorage.clear();
-      this.$store.commit('loginData', [undefined])
-      this.$router.push('/')
-    },
-  },
+
   beforeMount() {
     if(this.$store.state.userData.token == undefined) {
       console.log(localStorage)

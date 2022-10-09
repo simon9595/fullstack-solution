@@ -7,9 +7,7 @@
       <input class="form-control form-control-md" v-model="email" @blur="validateEmail" required /><br />
       <p class="form-text">E-mail must be a valid address, e.g. email@example.com</p>
       <label class="form-label col-form-label-md" for="username">Username</label><br />
-      <input class="form-control form-control-md" type="text" @blur="usernameAvailable(username = this.username)" v-model="username" required /><br />
-      <p v-if="usernameTaken" class="bg-danger">Username is already taken</p>
-      <p v-else-if="!usernameTaken && usernameTaken !== null" class="bg-success">Username is available</p>
+      <input class="form-control form-control-md" type="text" v-model="username" required /><br />
       <p class="form-text">Username must contain 3-15 characters</p>
       <label class="form-label col-form-label-md" for="password">Password</label><br />
       <input class="form-control form-control-md" type="password" @blur="passwordLength(password = this.password)" v-model="password" required /><br />
@@ -32,7 +30,6 @@ export default {
       email: null,
       username: '',
       password: null,
-      usernameTaken: null,
     };
   },
   methods: {
@@ -41,28 +38,6 @@ export default {
       let correctEmail = regexEmail.test(this.email);
       console.log(correctEmail)},
 
-    usernameAvailable(username) {
-      const regexUsername = /^[a-zA-Z0-9_-]{3,15}$/;
-      let correctUsername = regexUsername.test(username);
-      if(this.username.length > 2 && correctUsername) {
-        axios.get("http://localhost:3000/api/user/" + username, {
-          username: username
-        }).then(response => {
-          console.log(response.data)
-          if(response.data == null) {
-            console.log("ok ok ok")
-            return this.usernameTaken = false;
-          } else {
-            console.log("taken taken taken")
-            return this.usernameTaken = true;
-        }})
-        .catch(error => console.log("bad bad " + error))
-      } else {
-        this.usernameTaken = null;
-        console.log(correctUsername + ' ding')
-      }
-
-    },
     passwordLength(password) {
       const regexPassword = /^.{8,}$/;
       let correctPassword = regexPassword.test(password)
@@ -87,9 +62,12 @@ export default {
         alert('Your account has been created.')
         this.$router.push('/')
         })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error) 
+        alert('Email or username already in use')
+        });
       } else {
-        alert('Placeholder error message.')
+        alert('Please make sure the registration form is filled out properly.')
       }
 
 
