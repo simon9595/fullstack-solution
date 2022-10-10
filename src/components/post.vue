@@ -7,8 +7,8 @@
     <div>
     <p class="bg-info" v-if="post.Seen == null || !post.Seen.seen">NEW!</p>
     <p>{{ post.User.username }}</p>
-    <p>{{ moment(post.createdAt).fromNow() }}</p>
-    <p v-if="post.createdAt !== post.updatedAt">Edited: {{ moment(post.updatedAt).fromNow() }}</p>
+    <p class="text-end text-secondary">Posted {{ moment(post.createdAt).fromNow() }}</p>
+    <p class="text-end text-secondary" v-if="post.createdAt !== post.updatedAt">Edited {{ moment(post.updatedAt).fromNow() }}</p>
     <p>{{ post.text }}</p>
     <img class="img-fluid mb-4" v-if="post.attachment" v-bind:src="post.attachment">
     </div>
@@ -46,7 +46,7 @@ export default {
       }} )
       .then(() => {
         alert('Post has been deleted')
-        this.$router.go()
+        this.getAllPosts()
       }).catch(error => {
         console.log(error)
         alert('Something went wrong')
