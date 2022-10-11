@@ -3,7 +3,6 @@
 <navbar />
 <div class="container" id="newsfeed">
 <p class="mt-2">You are logged in as <strong>{{ $store.state.userData.username }}</strong></p>
-<newpost />
 <post />
 
 </div>
@@ -13,11 +12,14 @@
   #newsfeed{
     max-width: 750px;
   }
+  textarea {
+    height: 150px;
+    resize: none;
+  }
 </style>
 
 <script>
 import axios from "axios"
-import newpost from "../components/newpost.vue"
 import post from "../components/post.vue"
 import navbar from "../components/navbar.vue"
 export default {
@@ -28,7 +30,6 @@ export default {
     }
   },
   components: {
-    newpost,
     post,
     navbar
   },
