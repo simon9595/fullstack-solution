@@ -93,9 +93,11 @@ export default {
       .then(response => {
       console.log(response)
       alert('Your post has been published')
+      this.$refs.attachment.value = null;
       this.text = ''
       this.attachment = null
       this.getAllPosts();
+      this.seen()
     }).catch(error => console.error(error));
     }},
   uploadFile() {
