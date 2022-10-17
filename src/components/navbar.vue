@@ -1,7 +1,7 @@
 <template>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <h1 class="navbar-brand">GROUPOMANIA</h1>
+    <img class="navbar-brand" id="logo" src="../assets/icon-left-font.png">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,6 +21,13 @@
   </div>
 </nav>
 </template>
+
+<style>
+#logo {
+  max-height: 4em;
+  max-width: 13em;
+}
+</style>
 
 <script>
 export default {
