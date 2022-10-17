@@ -3,6 +3,10 @@
   <h1>Editing post</h1>
     <form enctype="multipart/form-data" @submit.prevent="submitEdit()">
       <textarea class="form-control" type="textarea" v-model="this.postEdit"></textarea><br>
+      <div class="d-sm-flex justify-content-between row">
+        <label for="file">Choose file to upload</label>
+        <input class="btn btn-secondary form-control" @change="changeFile" ref="editAttachment" type="file" accept="image/*">
+      </div>
       <div class="d-flex justify-content-around">
         <button class="btn btn-secondary mx-2 form-control" @click="cancel()" type="button">Cancel</button>
         <button class="btn btn-primary form-control" type="submit">Publish</button>
@@ -21,6 +25,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      editAttachment: null,
       postEdit: '',
       postId: null
     }
@@ -31,6 +36,9 @@ export default {
       formData.append('userId', this.$store.state.userData.userId),
       formData.append('postId', this.postId)
       formData.append('text', this.postEdit)
+      if(this.editAttachment !== null) {
+        formData.append('attachment', this.editAttachment)
+      }
       axios.put("http://localhost:3000/api/post/modify", formData, {
         headers: {
         Authorization: 'Bearer ' + this.$store.state.userData.token
@@ -45,6 +53,11 @@ export default {
     cancel(){
       localStorage.removeItem('postDataString')
       this.$router.push('/newsfeed')
+    },
+    changeFile(){
+      console.log('Attachment selected')
+      this.editAttachment = this.$refs.editAttachment.files[0];
+      console.log(this.editAttachment, this.$refs.editAttachment.files[0])
     }
   },
   beforeMount() {
